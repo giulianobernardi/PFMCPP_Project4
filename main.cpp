@@ -59,7 +59,8 @@ struct IntType
     int divide(int lhs, int rhs )
     {
         if( rhs != 0 )
-        return lhs / rhs;
+            return lhs / rhs;
+            
         std::cout << "division by zero not allowed with integers" << std::endl;
         return 0;
     }
