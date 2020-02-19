@@ -58,12 +58,10 @@ struct IntType
     int multiply(int lhs, int rhs ){ return lhs * rhs;}
     int divide(int lhs, int rhs )
     {
-        int result = 0; 
-        if (rhs != 0)
-            result = lhs / rhs;
-        else 
-            std::cout << "division by zero not allowed with integers" << std::endl;
-        return result;
+        if( rhs != 0 )
+        return lhs / rhs;
+        std::cout << "division by zero not allowed with integers" << std::endl;
+        return 0;
     }
 }; 
 
