@@ -31,7 +31,7 @@
 
  Wait for my code review.
  */
-
+#include <iostream>
 // FloatType object definition
 struct FloatType
 {
@@ -56,7 +56,15 @@ struct IntType
     int add(int lhs, int rhs ){ return lhs + rhs;}
     int subtract(int lhs,int rhs ){ return lhs - rhs;}
     int multiply(int lhs, int rhs ){ return lhs * rhs;}
-    int divide(int lhs, int rhs ){ return lhs / rhs;}
+    int divide(int lhs, int rhs )
+    {
+        int result = 0; 
+        if (rhs != 0)
+            result = lhs / rhs;
+        else 
+            std::cout << "division by zero not allowed with integers" << std::endl;
+        return result;
+    }
 }; 
 
 // Example of external definition using the scoping operator
@@ -65,7 +73,6 @@ struct IntType
 //     return lhs + rhs;
 // }
 
-#include <iostream>
 int main()
 {
     // FloatType object instanciation and method tests
@@ -101,7 +108,7 @@ int main()
     // IntType object instanciation and method tests
     IntType it;
     int firstIntArg = 3;
-    int secondIntArg = 23;
+    int secondIntArg = 0;
     // --------
     std::cout << "First int argument: " << firstIntArg << std::endl;
     std::cout << "Second int argument: " << secondIntArg << std::endl;   
