@@ -14,14 +14,17 @@ New/This/Pointers/References conclusion
          on the heap without leaking, without using smart pointers. 
  */
 
-
 struct A {};
 
 struct HeapA
 {
-    A* varA = new A();
-    HeapA() : varA(nullptr) {}
-    ~HeapA(){ delete varA; }
+    A* varA;
+    HeapA() : varA( new A() ) {}
+    ~HeapA()
+    { 
+        delete varA; 
+        varA = nullptr;
+    }
 };
 
  /*
@@ -68,85 +71,199 @@ send me a DM to check your pull request
 // FloatType object definition
 struct FloatType
 {
-    float add(float lhs, float rhs ){ return lhs + rhs;}
-    float subtract(float lhs,float rhs ){ return lhs - rhs;}
-    float multiply(float lhs, float rhs ){ return lhs * rhs;}
-    float divide(float lhs, float rhs ){ return lhs / rhs;}
+    float* value;
+    FloatType(float value_) : value( new float(value_) ) {}
+    ~FloatType()
+    { 
+        delete value; 
+        value = nullptr;
+    }
+    // 4 functions taking a float as input
+    FloatType& add(float rhs );
+    FloatType& subtract(float rhs );
+    FloatType& multiply(float rhs );
+    FloatType& divide(float rhs );
+    // // 4 functions taking a FloatType as input
+    // FloatType& add(const FloatType& rhs );
+    // FloatType& subtract(const FloatType& rhs );
+    // FloatType& multiply(const FloatType& rhs );
+    // FloatType& divide(const FloatType& rhs );
+    // // 4 functions taking a DoubleType as input
+    // FloatType& add(const DoubleType& rhs );
+    // FloatType& subtract(const DoubleType& rhs );
+    // FloatType& multiply(const DoubleType& rhs );
+    // FloatType& divide(const DoubleType& rhs );
+    // // 4 functions taking an int as input
 }; 
 
+// 4 functions taking a float as input
+FloatType& FloatType::add(float rhs)
+{
+    *value += rhs;
+    return *this;
+}
+FloatType& FloatType::subtract(float rhs)
+{
+    *value -= rhs;
+    return *this;
+}
+FloatType& FloatType::multiply(float rhs)
+{
+    *value *= rhs;
+    return *this;
+}
+FloatType& FloatType::divide(float rhs)
+{
+    *value /= rhs;
+    return *this;
+}
+
+// =============================================================
 // DoubleType object definition
 struct DoubleType
 {
-    double add(double lhs, double rhs ){ return lhs + rhs;}
-    double subtract(double lhs,double rhs ){ return lhs - rhs;}
-    double multiply(double lhs, double rhs ){ return lhs * rhs;}
-    double divide(double lhs, double rhs ){ return lhs / rhs;}
+    double* value;
+    DoubleType(double value_) : value( new double(value_) ) {}
+    ~DoubleType()
+    { 
+        delete value; 
+        value = nullptr;
+    }
+    // 4 functions taking a double as input
+    DoubleType& add(double rhs );
+    DoubleType& subtract(double rhs );
+    DoubleType& multiply(double rhs );
+    DoubleType& divide(double rhs );
 }; 
 
+// 4 functions taking a double as input
+DoubleType& DoubleType::add(double rhs)
+{
+    *value += rhs;
+    return *this;
+}
+DoubleType& DoubleType::subtract(double rhs)
+{
+    *value -= rhs;
+    return *this;
+}
+DoubleType& DoubleType::multiply(double rhs)
+{
+    *value *= rhs;
+    return *this;
+}
+DoubleType& DoubleType::divide(double rhs)
+{
+    *value /= rhs;
+    return *this;
+}
+// =============================================================
 // IntType object definition
 struct IntType
 {
-    int add(int lhs, int rhs ){ return lhs + rhs;}
-    int subtract(int lhs,int rhs ){ return lhs - rhs;}
-    int multiply(int lhs, int rhs ){ return lhs * rhs;}
-    int divide(int lhs, int rhs )
-    {
-        if( rhs != 0 )
-            return lhs / rhs;
-            
-        std::cout << "division by zero not allowed with integers" << std::endl;
-        return 0;
+    int* value;
+    IntType(int value_) : value( new int(value_) ) {}
+    ~IntType()
+    { 
+        delete value; 
+        value = nullptr;
     }
+    // 4 functions taking an int as input
+    IntType& add( int rhs );
+    IntType& subtract( int rhs );
+    IntType& multiply( int rhs );
+    IntType& divide( int rhs );
 }; 
+// 4 functions taking an int as input
+IntType& IntType::add(int rhs)
+{
+    *value += rhs;
+    return *this;
+}
+IntType& IntType::subtract(int rhs)
+{
+    *value -= rhs;
+    return *this;
+}
+IntType& IntType::multiply(int rhs)
+{
+    *value *= rhs;
+    return *this;
+}
+IntType& IntType::divide(int rhs)
+{
+    if( rhs != 0 )
+        *value /= rhs;
+    else    
+        std::cout << "division by zero not allowed with integers" << std::endl;
+    return *this;
+}
 
-// Example of external definition using the scoping operator
-// float FloatType::add( float lhs, float rhs )
+// // Functions taking other UDTs as inpu   t
+// FloatType& FloatType::add(const DoubleType& rhs)
 // {
-//     return lhs + rhs;
+//     *value += rhs;
+//     return *this;
 // }
+// FloatType& FloatType::subtract(const DoubleType& rhs)
+// {
+//     *value -= rhs;
+//     return *this;
+// }
+// FloatType& FloatType::multiply(const DoubleType& rhs)
+// {
+//     *value *= rhs;
+//     return *this;
+// }
+// FloatType& FloatType::divide(const DoubleType& rhs)
+// {
+//     *value /= rhs;
+//     return *this;
+// }
+
+// =============================================================
+//                              MAIN
+// =============================================================
 
 int main()
 {
     // FloatType object instanciation and method tests
-    FloatType ft;
-    float firstFloatArg = 3.2f;
+    FloatType ft (3.2f);
     float secondFloatArg = 23.f;
     // --------
-    std::cout << "First float argument: " << firstFloatArg << std::endl;
+    std::cout << "First float argument: " << *(ft.value) << std::endl;
     std::cout << "Second float argument: " << secondFloatArg << std::endl;
     // --------
-    std::cout << "result of ft.add(): " << ft.add(firstFloatArg, secondFloatArg ) << std::endl;
-    std::cout << "result of ft.subtract(): " << ft.subtract(firstFloatArg, secondFloatArg ) << std::endl;
-    std::cout << "result of ft.multiply(): " << ft.multiply(firstFloatArg, secondFloatArg ) << std::endl;
-    std::cout << "result of ft.divide(): " << ft.divide(firstFloatArg, secondFloatArg ) << std::endl; 
+    std::cout << "result of ft.add(): " << *(ft.add( secondFloatArg ).value) << std::endl;
+    std::cout << "result of ft.subtract(): " << *(ft.subtract( secondFloatArg ).value) << std::endl;
+    std::cout << "result of ft.multiply(): " << *(ft.multiply( secondFloatArg ).value) << std::endl;
+    std::cout << "result of ft.divide(): " << *(ft.divide( secondFloatArg ).value) << std::endl; 
        
     std::cout << "---------------------\n" << std::endl; 
     
     // DoubleType object instanciation and method tests
-    DoubleType dt;
-    double firstDoubleArg = 3.2;
+    DoubleType dt (3.2);
     double secondDoubleArg = 23.;
     // --------
-    std::cout << "First double argument: " << firstDoubleArg << std::endl;
+    std::cout << "First double argument: " << *(dt.value) << std::endl;
     std::cout << "Second double argument: " << secondDoubleArg << std::endl;   
     // -------- 
-    std::cout << "result of dt.add(): " << dt.add(firstDoubleArg, secondDoubleArg ) << std::endl;
-    std::cout << "result of dt.subtract(): " << dt.subtract(firstDoubleArg, secondDoubleArg ) << std::endl;
-    std::cout << "result of dt.multiply(): " << dt.multiply(firstDoubleArg, secondDoubleArg ) << std::endl;
-    std::cout << "result of dt.divide(): " << dt.divide(firstDoubleArg, secondDoubleArg ) << std::endl; 
+    std::cout << "result of dt.add(): " << *(dt.add( secondDoubleArg ).value) << std::endl;
+    std::cout << "result of dt.subtract(): " << *(dt.subtract( secondDoubleArg ).value) << std::endl;
+    std::cout << "result of dt.multiply(): " << *(dt.multiply( secondDoubleArg ).value) << std::endl;
+    std::cout << "result of dt.divide(): " << *(dt.divide( secondDoubleArg ).value) << std::endl; 
 
     std::cout << "---------------------\n" << std::endl; 
 
     // IntType object instanciation and method tests
-    IntType it;
-    int firstIntArg = 3;
+    IntType it(3);
     int secondIntArg = 0;
     // --------
-    std::cout << "First int argument: " << firstIntArg << std::endl;
+    std::cout << "First int argument: " << *(it.value) << std::endl;
     std::cout << "Second int argument: " << secondIntArg << std::endl;   
     // --------     
-    std::cout << "result of it.add(): " << it.add(firstIntArg, secondIntArg ) << std::endl;
-    std::cout << "result of it.subtract(): " << it.subtract(firstIntArg, secondIntArg ) << std::endl;
-    std::cout << "result of it.multiply(): " << it.multiply(firstIntArg, secondIntArg ) << std::endl;
-    std::cout << "result of it.divide(): " << it.divide(firstIntArg, secondIntArg ) << std::endl;           
+    std::cout << "result of it.add(): " << *(it.add( secondIntArg ).value) << std::endl;
+    std::cout << "result of it.subtract(): " << *(it.subtract( secondIntArg ).value) << std::endl;
+    std::cout << "result of it.multiply(): " << *(it.multiply( secondIntArg ).value) << std::endl;
+    std::cout << "result of it.divide(): " << *(it.divide( secondIntArg ).value) << std::endl;           
 }
