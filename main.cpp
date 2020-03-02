@@ -421,47 +421,30 @@ int main()
 {
     // FloatType object instanciation and method tests
     FloatType ft (3.0f);
-    float secondFloatArg = 5.f;
     // --------
-    std::cout << "First float argument: " << *(ft.value) << std::endl;
-    std::cout << "Second float argument: " << secondFloatArg << std::endl;
+    std::cout << "Initial value of ft: " << *(ft.value) << std::endl;
     // --------
-    std::cout << "result of ft.add(): " << *(ft.add( secondFloatArg ).value) << std::endl;
-    std::cout << "result of ft.subtract(): " << *(ft.subtract( secondFloatArg ).value) << std::endl;
-    std::cout << "result of ft.multiply(): " << *(ft.multiply( secondFloatArg ).value) << std::endl;
-    std::cout << "result of ft.divide(): " << *(ft.divide( secondFloatArg ).value) << std::endl; 
+    std::cout << "Use of function concatenation (only float arguments) " << std::endl;
+    std::cout << "New value of ft = (ft + 3.0f) * 1.5f / 5.0f = " << *(ft.add( 3.0f ).multiply(1.5f).divide(5.0f).value) << std::endl;
        
     std::cout << "---------------------\n" << std::endl; 
     
-    // DoubleType object instanciation and method tests
+    // DoubleType/IntType object instanciation and method tests
     DoubleType dt (5.0);
-    double secondDoubleArg = 2.0;
-    // --------
-    std::cout << "First double argument: " << *(dt.value) << std::endl;
-    std::cout << "Second double argument: " << secondDoubleArg << std::endl;   
-    // -------- 
-    std::cout << "result of dt.add(): " << *(dt.add( secondDoubleArg ).value) << std::endl;
-    std::cout << "result of dt.subtract(): " << *(dt.subtract( secondDoubleArg ).value) << std::endl;
-    std::cout << "result of dt.multiply(): " << *(dt.multiply( secondDoubleArg ).value) << std::endl;
-    std::cout << "result of dt.divide(): " << *(dt.divide( secondDoubleArg ).value) << std::endl; 
-
-    std::cout << "---------------------\n" << std::endl; 
-
-    // IntType object instanciation and method tests
     IntType it(10);
-    int secondIntArg = 5;
     // --------
-    std::cout << "First int argument: " << *(it.value) << std::endl;
-    std::cout << "Second int argument: " << secondIntArg << std::endl;   
-    // --------     
-    std::cout << "result of it.add(): " << *(it.add( secondIntArg ).value) << std::endl;
-    std::cout << "result of it.subtract(): " << *(it.subtract( secondIntArg ).value) << std::endl;
-    std::cout << "result of it.multiply(): " << *(it.multiply( secondIntArg ).value) << std::endl;
-    std::cout << "result of it.divide(): " << *(it.divide( secondIntArg ).value) << std::endl;   
-    
-    std::cout << "---------------------\n" << std::endl; 
+    std::cout << "Initial value of dt: " << *(dt.value) << std::endl;
+    std::cout << "Initial value of it: " << *(it.value) << std::endl;
+    // --------
+    std::cout << "Use of function concatenation (mixed type arguments) " << std::endl;
+    std::cout << "New value of dt = (dt * it) / 5.0f + ft = " << *(dt.multiply(it).divide(5.0f).add(ft).value) << std::endl;
 
-    // Composition and cross UDT arithmetic tests
-    // --------     
-    std::cout << "result of ft.add(dt).divide(it): " << *(ft.subtract(it).value) << std::endl;
+    std::cout << "---------------------\n" << std::endl; 
+    
+    // Intercept division by 0
+    // --------
+    std::cout << "Intercept division by 0 " << std::endl;
+    std::cout << "New value of it = dt / 0 = " << *(it.divide(0).value) << std::endl;
+
+    std::cout << "---------------------\n" << std::endl; 
 }
