@@ -68,7 +68,13 @@ send me a DM to check your pull request
 
 
 #include <iostream>
-// FloatType object definition
+// Forward declarations to be able to use DoubleType and IntType
+struct DoubleType;
+struct IntType;
+
+// =============================================================
+//                  FloatType object definition
+// =============================================================
 struct FloatType
 {
     float* value;
@@ -83,17 +89,21 @@ struct FloatType
     FloatType& subtract(float rhs );
     FloatType& multiply(float rhs );
     FloatType& divide(float rhs );
-    // // 4 functions taking a FloatType as input
-    // FloatType& add(const FloatType& rhs );
-    // FloatType& subtract(const FloatType& rhs );
-    // FloatType& multiply(const FloatType& rhs );
-    // FloatType& divide(const FloatType& rhs );
-    // // 4 functions taking a DoubleType as input
-    // FloatType& add(const DoubleType& rhs );
-    // FloatType& subtract(const DoubleType& rhs );
-    // FloatType& multiply(const DoubleType& rhs );
-    // FloatType& divide(const DoubleType& rhs );
-    // // 4 functions taking an int as input
+    // 4 functions taking a FloatType as input
+    FloatType& add(const FloatType& rhsFt );
+    FloatType& subtract(const FloatType& rhsFt );
+    FloatType& multiply(const FloatType& rhsFt );
+    FloatType& divide(const FloatType& rhsFt );
+    // 4 functions taking a DoubleType as input
+    FloatType& add(const DoubleType& rhsDt );
+    FloatType& subtract(const DoubleType& rhsDt );
+    FloatType& multiply(const DoubleType& rhsDt );
+    FloatType& divide(const DoubleType& rhsDt );
+    // 4 functions taking an int as input
+    FloatType& add(const IntType& rhsIt );
+    FloatType& subtract(const IntType& rhsIt );
+    FloatType& multiply(const IntType& rhsIt );
+    FloatType& divide(const IntType& rhsIt );
 }; 
 
 // 4 functions taking a float as input
@@ -119,7 +129,8 @@ FloatType& FloatType::divide(float rhs)
 }
 
 // =============================================================
-// DoubleType object definition
+//                  DoubleType object definition
+// =============================================================
 struct DoubleType
 {
     double* value;
@@ -134,6 +145,21 @@ struct DoubleType
     DoubleType& subtract(double rhs );
     DoubleType& multiply(double rhs );
     DoubleType& divide(double rhs );
+    // 4 functions taking a FloatType as input
+    DoubleType& add(const FloatType& rhsFt );
+    DoubleType& subtract(const FloatType& rhsFt );
+    DoubleType& multiply(const FloatType& rhsFt );
+    DoubleType& divide(const FloatType& rhsFt );
+    // 4 functions taking a DoubleType as input
+    DoubleType& add(const DoubleType& rhsDt );
+    DoubleType& subtract(const DoubleType& rhsDt );
+    DoubleType& multiply(const DoubleType& rhsDt );
+    DoubleType& divide(const DoubleType& rhsDt );
+    // 4 functions taking an int as input
+    DoubleType& add(const IntType& rhsIt );
+    DoubleType& subtract(const IntType& rhsIt );
+    DoubleType& multiply(const IntType& rhsIt );
+    DoubleType& divide(const IntType& rhsIt );
 }; 
 
 // 4 functions taking a double as input
@@ -157,8 +183,10 @@ DoubleType& DoubleType::divide(double rhs)
     *value /= rhs;
     return *this;
 }
+
 // =============================================================
-// IntType object definition
+//                  IntType object definition
+// =============================================================
 struct IntType
 {
     int* value;
@@ -173,6 +201,21 @@ struct IntType
     IntType& subtract( int rhs );
     IntType& multiply( int rhs );
     IntType& divide( int rhs );
+    // 4 functions taking a FloatType as input
+    IntType& add(const FloatType& rhsFt );
+    IntType& subtract(const FloatType& rhsFt );
+    IntType& multiply(const FloatType& rhsFt );
+    IntType& divide(const FloatType& rhsFt );
+    // 4 functions taking a DoubleType as input
+    IntType& add(const DoubleType& rhsDt );
+    IntType& subtract(const DoubleType& rhsDt );
+    IntType& multiply(const DoubleType& rhsDt );
+    IntType& divide(const DoubleType& rhsDt );
+    // 4 functions taking an int as input
+    IntType& add(const IntType& rhsIt );
+    IntType& subtract(const IntType& rhsIt );
+    IntType& multiply(const IntType& rhsIt );
+    IntType& divide(const IntType& rhsIt );    
 }; 
 // 4 functions taking an int as input
 IntType& IntType::add(int rhs)
@@ -196,30 +239,179 @@ IntType& IntType::divide(int rhs)
         *value /= rhs;
     else    
         std::cout << "division by zero not allowed with integers" << std::endl;
-    return *this;
+    return *this;        
 }
 
-// // Functions taking other UDTs as inpu   t
-// FloatType& FloatType::add(const DoubleType& rhs)
-// {
-//     *value += rhs;
-//     return *this;
-// }
-// FloatType& FloatType::subtract(const DoubleType& rhs)
-// {
-//     *value -= rhs;
-//     return *this;
-// }
-// FloatType& FloatType::multiply(const DoubleType& rhs)
-// {
-//     *value *= rhs;
-//     return *this;
-// }
-// FloatType& FloatType::divide(const DoubleType& rhs)
-// {
-//     *value /= rhs;
-//     return *this;
-// }
+// =============================================================
+//         Functions accepting other UDTs as input types
+// =============================================================
+
+// -----------------------FloatType----------------------
+// FloatType accepting FloatType
+FloatType& FloatType::add(const FloatType& rhsFt)
+{
+    return add(*rhsFt.value);
+}
+FloatType& FloatType::subtract(const FloatType& rhsFt)
+{
+    return subtract(*rhsFt.value);
+}
+FloatType& FloatType::multiply(const FloatType& rhsFt)
+{
+    return multiply(*rhsFt.value);
+}
+FloatType& FloatType::divide(const FloatType& rhsFt)
+{
+    return divide(*rhsFt.value);
+}
+
+// FloatType accepting DoubleType
+FloatType& FloatType::add(const DoubleType& rhsDt)
+{
+    return add(*rhsDt.value);
+}
+FloatType& FloatType::subtract(const DoubleType& rhsDt)
+{
+    return subtract(*rhsDt.value);
+}
+FloatType& FloatType::multiply(const DoubleType& rhsDt)
+{
+    return multiply(*rhsDt.value);
+}
+FloatType& FloatType::divide(const DoubleType& rhsDt)
+{
+    return divide(*rhsDt.value);
+}
+
+// FloatType accepting IntType
+FloatType& FloatType::add(const IntType& rhsIt)
+{
+    return add(*rhsIt.value);
+}
+FloatType& FloatType::subtract(const IntType& rhsIt)
+{
+    return subtract(*rhsIt.value);
+}
+FloatType& FloatType::multiply(const IntType& rhsIt)
+{
+    return multiply(*rhsIt.value);
+}
+FloatType& FloatType::divide(const IntType& rhsIt)
+{
+    return divide(*rhsIt.value);
+}
+
+// -----------------------DoubleType----------------------
+// DoubleType accepting FloatType
+DoubleType& DoubleType::add(const FloatType& rhsFt)
+{
+    return add(*rhsFt.value);
+}
+DoubleType& DoubleType::subtract(const FloatType& rhsFt)
+{
+    return subtract(*rhsFt.value);
+}
+DoubleType& DoubleType::multiply(const FloatType& rhsFt)
+{
+    return multiply(*rhsFt.value);
+}
+DoubleType& DoubleType::divide(const FloatType& rhsFt)
+{
+    return divide(*rhsFt.value);
+}
+
+// DoubleType accepting DoubleType
+DoubleType& DoubleType::add(const DoubleType& rhsDt)
+{
+    return add(*rhsDt.value);
+}
+DoubleType& DoubleType::subtract(const DoubleType& rhsDt)
+{
+    return subtract(*rhsDt.value);
+}
+DoubleType& DoubleType::multiply(const DoubleType& rhsDt)
+{
+    return multiply(*rhsDt.value);
+}
+DoubleType& DoubleType::divide(const DoubleType& rhsDt)
+{
+    return divide(*rhsDt.value);
+}
+
+// DoubleType accepting IntType
+DoubleType& DoubleType::add(const IntType& rhsIt)
+{
+    return add(*rhsIt.value);
+}
+DoubleType& DoubleType::subtract(const IntType& rhsIt)
+{
+    return subtract(*rhsIt.value);
+}
+DoubleType& DoubleType::multiply(const IntType& rhsIt)
+{
+    return multiply(*rhsIt.value);
+}
+DoubleType& DoubleType::divide(const IntType& rhsIt)
+{
+    return divide(*rhsIt.value);
+}
+
+
+// -----------------------IntType----------------------
+// IntType accepting FloatType
+IntType& IntType::add(const FloatType& rhsFt)
+{
+    return add(*rhsFt.value);
+}
+IntType& IntType::subtract(const FloatType& rhsFt)
+{
+    return subtract(*rhsFt.value);
+}
+IntType& IntType::multiply(const FloatType& rhsFt)
+{
+    return multiply(*rhsFt.value);
+}
+IntType& IntType::divide(const FloatType& rhsFt)
+{
+    return divide(*rhsFt.value);
+}
+
+// IntType accepting DoubleType
+IntType& IntType::add(const DoubleType& rhsDt)
+{
+    return add(*rhsDt.value);
+}
+IntType& IntType::subtract(const DoubleType& rhsDt)
+{
+    return subtract(*rhsDt.value);
+}
+IntType& IntType::multiply(const DoubleType& rhsDt)
+{
+    return multiply(*rhsDt.value);
+}
+IntType& IntType::divide(const DoubleType& rhsDt)
+{
+    return divide(*rhsDt.value);
+}
+
+// IntType accepting IntType
+IntType& IntType::add(const IntType& rhsIt)
+{
+    return add(*rhsIt.value);
+}
+IntType& IntType::subtract(const IntType& rhsIt)
+{
+    return subtract(*rhsIt.value);
+}
+IntType& IntType::multiply(const IntType& rhsIt)
+{
+    return multiply(*rhsIt.value);
+}
+IntType& IntType::divide(const IntType& rhsIt)
+{
+    return divide(*rhsIt.value);
+}
+
 
 // =============================================================
 //                              MAIN
@@ -228,8 +420,8 @@ IntType& IntType::divide(int rhs)
 int main()
 {
     // FloatType object instanciation and method tests
-    FloatType ft (3.2f);
-    float secondFloatArg = 23.f;
+    FloatType ft (3.0f);
+    float secondFloatArg = 5.f;
     // --------
     std::cout << "First float argument: " << *(ft.value) << std::endl;
     std::cout << "Second float argument: " << secondFloatArg << std::endl;
@@ -242,8 +434,8 @@ int main()
     std::cout << "---------------------\n" << std::endl; 
     
     // DoubleType object instanciation and method tests
-    DoubleType dt (3.2);
-    double secondDoubleArg = 23.;
+    DoubleType dt (5.0);
+    double secondDoubleArg = 2.0;
     // --------
     std::cout << "First double argument: " << *(dt.value) << std::endl;
     std::cout << "Second double argument: " << secondDoubleArg << std::endl;   
@@ -256,8 +448,8 @@ int main()
     std::cout << "---------------------\n" << std::endl; 
 
     // IntType object instanciation and method tests
-    IntType it(3);
-    int secondIntArg = 0;
+    IntType it(10);
+    int secondIntArg = 5;
     // --------
     std::cout << "First int argument: " << *(it.value) << std::endl;
     std::cout << "Second int argument: " << secondIntArg << std::endl;   
@@ -265,5 +457,11 @@ int main()
     std::cout << "result of it.add(): " << *(it.add( secondIntArg ).value) << std::endl;
     std::cout << "result of it.subtract(): " << *(it.subtract( secondIntArg ).value) << std::endl;
     std::cout << "result of it.multiply(): " << *(it.multiply( secondIntArg ).value) << std::endl;
-    std::cout << "result of it.divide(): " << *(it.divide( secondIntArg ).value) << std::endl;           
+    std::cout << "result of it.divide(): " << *(it.divide( secondIntArg ).value) << std::endl;   
+    
+    std::cout << "---------------------\n" << std::endl; 
+
+    // Composition and cross UDT arithmetic tests
+    // --------     
+    std::cout << "result of ft.add(dt).divide(it): " << *(ft.subtract(it).value) << std::endl;
 }
