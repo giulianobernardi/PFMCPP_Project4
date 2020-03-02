@@ -15,14 +15,14 @@ New/This/Pointers/References conclusion
  */
 
 
+struct A {};
 
-
-
-
-
-
-
-
+struct HeapA
+{
+    A* varA = new A();
+    HeapA() : varA(nullptr) {}
+    ~HeapA(){ delete varA; }
+};
 
  /*
  1) Edit your 3 structs so that they own a heap-allocated primitive type without using smart pointers  
