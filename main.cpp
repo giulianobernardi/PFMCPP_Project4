@@ -60,10 +60,8 @@ public:
     FloatType& subtract(float rhs );
     FloatType& multiply(float rhs );
     FloatType& divide(float rhs );
-    // convert UDT to primitive types
-    operator int(); FIXME remove this conversion function
+    // convert UDT to primitive type
     operator float();
-    operator double(); FIXME remove this conversion function
 }; 
 // 4 functions taking a float as input
 FloatType& FloatType::add(float rhs)
@@ -86,20 +84,11 @@ FloatType& FloatType::divide(float rhs)
     *value /= rhs;
     return *this;
 }
-// convert UDT to primitive types
-FloatType::operator int()
-{ 
-    return int(*this->value); 
-}
+// convert UDT to primitive type
 FloatType::operator float()
 {
     return float(*this->value); 
 }
-FloatType::operator double()
-{
-    return double(*this->value);
-}
-
 // =============================================================
 //                  DoubleType object definition
 // =============================================================
@@ -119,9 +108,7 @@ public:
     DoubleType& subtract(double rhs );
     DoubleType& multiply(double rhs );
     DoubleType& divide(double rhs );
-    // convert UDT to primitive types
-    operator int(); FIXME remove this conversion function
-    operator float(); FIXME remove this conversion function
+    // convert UDT to primitive type
     operator double();
 }; 
 // 4 functions taking a double as input
@@ -145,15 +132,7 @@ DoubleType& DoubleType::divide(double rhs)
     *value /= rhs;
     return *this;
 }
-// convert UDT to primitive types
-DoubleType::operator int()
-{
-    return int(*this->value);
-}
-DoubleType::operator float()
-{
-    return float(*this->value);
-}
+// convert UDT to primitive type
 DoubleType::operator double()
 {
     return double(*this->value);
@@ -177,10 +156,8 @@ public:
     IntType& subtract( int rhs );
     IntType& multiply( int rhs );
     IntType& divide( int rhs );
-    // convert UDT to primitive types
+    // convert UDT to primitive type
     operator int();
-    operator float(); FIXME remove this conversion function
-    operator double(); FIXME remove this conversion function
 }; 
 // 4 functions taking an int as input
 IntType& IntType::add(int rhs)
@@ -206,19 +183,11 @@ IntType& IntType::divide(int rhs)
         std::cout << "division by zero not allowed with integers" << std::endl;
     return *this;        
 }
-// convert UDT to primitive types
+// convert UDT to primitive type
 IntType::operator int()
 {
     return int(*this->value);
 }
-IntType::operator float()
-{
-    return float(*this->value);
-}
-IntType::operator double()
-{
-    return double(*this->value);
-}   
 // =============================================================
 //                              MAIN
 // =============================================================
@@ -243,7 +212,7 @@ int main()
     std::cout << "Initial value of it: " << int(it) << std::endl;
     // --------
     std::cout << "Use of function concatenation (mixed type arguments) " << std::endl;
-    std::cout << "New value of dt = (dt * it) / 5.0f + ft = " << double( dt.multiply(it).divide(double(5.0f)).add(ft) ) << std::endl;
+    std::cout << "New value of dt = (dt * it) / 5.0f + ft = " << double( dt.multiply(it).divide(double(5.0f)).add(double(ft)) ) << std::endl;
 
     std::cout << "---------------------\n" << std::endl; 
     
