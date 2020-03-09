@@ -61,9 +61,9 @@ public:
     FloatType& multiply(float rhs );
     FloatType& divide(float rhs );
     // convert UDT to primitive types
-    operator int();
+    operator int(); FIXME remove this conversion function
     operator float();
-    operator double();
+    operator double(); FIXME remove this conversion function
 }; 
 // 4 functions taking a float as input
 FloatType& FloatType::add(float rhs)
@@ -120,8 +120,8 @@ public:
     DoubleType& multiply(double rhs );
     DoubleType& divide(double rhs );
     // convert UDT to primitive types
-    operator int();
-    operator float();
+    operator int(); FIXME remove this conversion function
+    operator float(); FIXME remove this conversion function
     operator double();
 }; 
 // 4 functions taking a double as input
@@ -179,8 +179,8 @@ public:
     IntType& divide( int rhs );
     // convert UDT to primitive types
     operator int();
-    operator float();
-    operator double();
+    operator float(); FIXME remove this conversion function
+    operator double(); FIXME remove this conversion function
 }; 
 // 4 functions taking an int as input
 IntType& IntType::add(int rhs)
