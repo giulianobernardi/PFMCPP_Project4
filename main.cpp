@@ -87,7 +87,7 @@ FloatType& FloatType::divide(float rhs)
 // convert UDT to primitive type
 FloatType::operator float()
 {
-    return *this->value;
+    return *value;
 }
 // =============================================================
 //                  DoubleType object definition
@@ -135,7 +135,7 @@ DoubleType& DoubleType::divide(double rhs)
 // convert UDT to primitive type
 DoubleType::operator double()
 {
-    return *this->value;
+    return *value;
 }
 // =============================================================
 //                  IntType object definition
@@ -186,7 +186,7 @@ IntType& IntType::divide(int rhs)
 // convert UDT to primitive type
 IntType::operator int()
 {
-    return *this->value;
+    return *value;
 }
 // =============================================================
 //                              MAIN
