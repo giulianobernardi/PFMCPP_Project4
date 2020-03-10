@@ -61,7 +61,10 @@ public:
     FloatType& multiply(float rhs );
     FloatType& divide(float rhs );
     // convert UDT to primitive type
-    operator float();
+    operator float()
+    {
+        return *value;
+    }
 }; 
 // 4 functions taking a float as input
 FloatType& FloatType::add(float rhs)
@@ -84,11 +87,6 @@ FloatType& FloatType::divide(float rhs)
     *value /= rhs;
     return *this;
 }
-// convert UDT to primitive type
-FloatType::operator float()
-{
-    return *value;
-}
 // =============================================================
 //                  DoubleType object definition
 // =============================================================
@@ -109,7 +107,10 @@ public:
     DoubleType& multiply(double rhs );
     DoubleType& divide(double rhs );
     // convert UDT to primitive type
-    operator double();
+    operator double()
+    {
+        return *value;
+    }
 }; 
 // 4 functions taking a double as input
 DoubleType& DoubleType::add(double rhs)
@@ -132,11 +133,6 @@ DoubleType& DoubleType::divide(double rhs)
     *value /= rhs;
     return *this;
 }
-// convert UDT to primitive type
-DoubleType::operator double()
-{
-    return *value;
-}
 // =============================================================
 //                  IntType object definition
 // =============================================================
@@ -157,7 +153,10 @@ public:
     IntType& multiply( int rhs );
     IntType& divide( int rhs );
     // convert UDT to primitive type
-    operator int();
+    operator int()
+    {
+        return *value;
+    }
 }; 
 // 4 functions taking an int as input
 IntType& IntType::add(int rhs)
@@ -183,11 +182,6 @@ IntType& IntType::divide(int rhs)
         std::cout << "division by zero not allowed with integers" << std::endl;
     return *this;        
 }
-// convert UDT to primitive type
-IntType::operator int()
-{
-    return *value;
-}
 // =============================================================
 //                              MAIN
 // =============================================================
@@ -197,10 +191,10 @@ int main()
     // FloatType object instanciation and method tests
     FloatType ft (3.0f);
     // --------
-    std::cout << "Initial value of ft: " << float(ft) << std::endl;
+    std::cout << "Initial value of ft: " << ft << std::endl;
     // --------
     std::cout << "Use of function concatenation (only float arguments) " << std::endl;
-    std::cout << "New value of ft = (ft + 3.0f) * 1.5f / 5.0f = " << float( (ft.add( 3.0f ).multiply(1.5f).divide(5.0f)) ) << std::endl;
+    std::cout << "New value of ft = (ft + 3.0f) * 1.5f / 5.0f = " <<  ft.add( 3.0f ).multiply(1.5f).divide(5.0f)  << std::endl;
        
     std::cout << "---------------------\n" << std::endl; 
     
@@ -208,18 +202,18 @@ int main()
     DoubleType dt (5.0);
     IntType it(10);
     // --------
-    std::cout << "Initial value of dt: " << double(dt) << std::endl;
-    std::cout << "Initial value of it: " << int(it) << std::endl;
+    std::cout << "Initial value of dt: " << dt << std::endl;
+    std::cout << "Initial value of it: " << it << std::endl;
     // --------
     std::cout << "Use of function concatenation (mixed type arguments) " << std::endl;
-    std::cout << "New value of dt = (dt * it) / 5.0f + ft = " << double( dt.multiply(it).divide(double(5.0f)).add(double(ft)) ) << std::endl;
+    std::cout << "New value of dt = (dt * it) / 5.0f + ft = " <<  dt.multiply(it).divide(double(5.0f)).add(double(ft))  << std::endl;
 
     std::cout << "---------------------\n" << std::endl; 
     
     // Intercept division by 0
     // --------
     std::cout << "Intercept division by 0 " << std::endl;
-    std::cout << "New value of it = dt / 0 = " << int((it.divide(0)) ) << std::endl;
+    std::cout << "New value of it = dt / 0 = " << it.divide(0)  << std::endl;
 
     std::cout << "---------------------\n" << std::endl; 
 }
