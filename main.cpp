@@ -206,7 +206,7 @@ int main()
     std::cout << "Initial value of it: " << it << std::endl;
     // --------
     std::cout << "Use of function concatenation (mixed type arguments) " << std::endl;
-    std::cout << "New value of dt = (dt * it) / 5.0f + ft = " <<  dt.multiply(it).divide(double(5.0f)).add(double(ft))  << std::endl;
+    std::cout << "New value of dt = (dt * it) / 5.0f + ft = " <<  dt.multiply(it).divide(static_cast<double>(5.0f)).add(static_cast<double>(ft))  << std::endl;
 
     std::cout << "---------------------\n" << std::endl; 
     
