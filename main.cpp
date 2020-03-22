@@ -66,9 +66,9 @@ struct IntType;
 struct Point
 {
     Point(float, float);
-    Point& multiply(const FloatType ftm);
-    Point& multiply(const DoubleType dtm);
-    Point& multiply(const IntType itm);
+    Point& multiply(const FloatType& ftm);
+    Point& multiply(const DoubleType& dtm);
+    Point& multiply(const IntType& itm);
     Point& multiply(float m);
     void toString();
 private:
@@ -89,11 +89,9 @@ public:
     { 
         delete value; 
         value = nullptr;
-        std::cout << "Am I being called?" << std::endl;
     }
-    // Explicit definition of copy constructor and assignment to silence warnings
+    // Explicit definition of copy constructor to silence warnings
     FloatType(const FloatType&) = default;
-    FloatType& operator=(const FloatType&) = default;    
     // 4 functions taking a float as input
     FloatType& add(float rhs );
     FloatType& subtract(float rhs );
@@ -146,9 +144,8 @@ public:
         delete value; 
         value = nullptr;
     }
-    // Explicit definition of copy constructor and assignment to silence warnings
-    DoubleType(const DoubleType&) = default;
-    DoubleType& operator=(const DoubleType&) = default;    
+    // Explicit definition of copy constructor to silence warnings
+    DoubleType(const DoubleType&) = default; 
     // 4 functions taking a double as input
     DoubleType& add(double rhs );
     DoubleType& subtract(double rhs );
@@ -201,9 +198,8 @@ public:
         delete value; 
         value = nullptr;
     }
-    // Explicit definition of copy constructor and assignment to silence warnings
+    // Explicit definition of copy constructor to silence warnings
     IntType(const IntType&) = default;
-    IntType& operator=(const IntType&) = default;    
     // 4 functions taking an int as input
     IntType& add( int rhs );
     IntType& subtract( int rhs );
@@ -322,19 +318,19 @@ IntType& IntType::pow(const DoubleType& dtExp)
 // =============================================================
 
 Point::Point(float cx, float cy) : x(cx), y(cy) {}
-Point& Point::multiply(const FloatType ftm) 
+Point& Point::multiply(const FloatType& ftm) 
 {
     x *= ftm;
     y *= ftm;
     return *this;
 }
-Point& Point::multiply(const DoubleType dtm) 
+Point& Point::multiply(const DoubleType& dtm) 
 {
     x *= static_cast<float>(dtm);
     y *= static_cast<float>(dtm);
     return *this;
 }
-Point& Point::multiply(const IntType itm)
+Point& Point::multiply(const IntType& itm)
 {
     x *= itm;
     y *= itm;
@@ -466,7 +462,7 @@ int main()
 
     // Point tests with IntType
     std::cout << "Point tests with IntType argument:" << std::endl;
-    Point p3(ft2, dt2);
+    Point p3(ft2, static_cast<float>(dt2));
     p3.toString();   
     std::cout << "Multiplication factor: " << it2 << std::endl;
     p3.multiply(it2); 
