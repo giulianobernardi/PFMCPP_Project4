@@ -199,7 +199,7 @@ public:
         value = nullptr;
     }
     // Explicit definition of copy constructor to silence warnings
-    IntType(const IntType&) = default;
+    // IntType(const IntType&) = default;
     // 4 functions taking an int as input
     IntType& add( int rhs );
     IntType& subtract( int rhs );
@@ -370,7 +370,6 @@ int main()
     DoubleType dt0 (5.0);
     IntType it0(10);
 
-    IntType copy(it0);
     // --------
     std::cout << "Initial value of dt0: " << dt0 << std::endl;
     std::cout << "Initial value of it0: " << it0 << std::endl;
