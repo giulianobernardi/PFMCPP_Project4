@@ -247,7 +247,7 @@ IntType& IntType::divide(int rhs)
 // Power methods for FloatType
 FloatType& FloatType::powIternal(const float exp) 
 {
-    *value = static_cast<float>(std::pow(*value, exp)); FIXME casting not necessary
+    *value = std::pow(*value, exp);
     return *this;
 }
 FloatType& FloatType::pow(const float exp) 
@@ -270,7 +270,7 @@ FloatType& FloatType::pow(const DoubleType& dtExp)
 // Power methods for DoubleType
 DoubleType& DoubleType::powIternal(const double exp) 
 {
-    *value = static_cast<double>(std::pow(*value, exp)); FIXME casting not necessary
+    *value = std::pow(*value, exp);
     return *this;
 }
 DoubleType& DoubleType::pow(const double exp) 
@@ -318,22 +318,19 @@ IntType& IntType::pow(const DoubleType& dtExp)
 // =============================================================
 
 Point::Point(float cx, float cy) : x(cx), y(cy) {}
-Point& Point::multiply(const FloatType& ftm) FIXME: DRY refactor. call multiply(float) internally.
+Point& Point::multiply(const FloatType& ftm)
 {
-    x *= ftm;
-    y *= ftm;
+    multiply(static_cast<float>(ftm));
     return *this;
 }
-Point& Point::multiply(const DoubleType& dtm) FIXME: DRY refactor. call multiply(float) internally.
+Point& Point::multiply(const DoubleType& dtm)
 {
-    x *= static_cast<float>(dtm); 
-    y *= static_cast<float>(dtm);
+    multiply(static_cast<float>(dtm));
     return *this;
 }
-Point& Point::multiply(const IntType& itm) FIXME: DRY refactor. call multiply(float) internally.
+Point& Point::multiply(const IntType& itm)
 {
-    x *= itm;
-    y *= itm;
+    multiply(static_cast<float>(itm));
     return *this;
 }
 Point& Point::multiply(float m)
