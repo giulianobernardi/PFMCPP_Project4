@@ -91,7 +91,7 @@ public:
         value = nullptr;
     }
     // Explicit definition of copy constructor to silence warnings
-    FloatType(const FloatType&) = default;
+    // FloatType(const FloatType&) = default;
     // 4 functions taking a float as input
     FloatType& add(float rhs );
     FloatType& subtract(float rhs );
@@ -145,7 +145,7 @@ public:
         value = nullptr;
     }
     // Explicit definition of copy constructor to silence warnings
-    DoubleType(const DoubleType&) = default; 
+    // DoubleType(const DoubleType&) = default; 
     // 4 functions taking a double as input
     DoubleType& add(double rhs );
     DoubleType& subtract(double rhs );
@@ -369,6 +369,8 @@ int main()
     // DoubleType/IntType object instanciation and method tests
     DoubleType dt0 (5.0);
     IntType it0(10);
+
+    IntType copy(it0);
     // --------
     std::cout << "Initial value of dt0: " << dt0 << std::endl;
     std::cout << "Initial value of it0: " << it0 << std::endl;
