@@ -98,7 +98,7 @@ public:
     FloatType& multiply(float rhs );
     FloatType& divide(float rhs );
     // 4 power functions with different exponent type
-    FloatType& powIternal(const float exp);
+    FloatType& powInternal(const float exp);
     FloatType& pow(const float exp); 
     FloatType& pow(const IntType& itExp);
     FloatType& pow(const FloatType& ftExp);
@@ -152,7 +152,7 @@ public:
     DoubleType& multiply(double rhs );
     DoubleType& divide(double rhs );
     // 4 power functions with different exponent type
-    DoubleType& powIternal(const double exp);
+    DoubleType& powInternal(const double exp);
     DoubleType& pow(const double exp); 
     DoubleType& pow(const IntType& itExp);
     DoubleType& pow(const FloatType& ftExp);
@@ -206,7 +206,7 @@ public:
     IntType& multiply( int rhs );
     IntType& divide( int rhs );
     // 4 power functions with different exponent type
-    IntType& powIternal(const int exp);
+    IntType& powInternal(const int exp);
     IntType& pow(const int exp); 
     IntType& pow(const IntType& itExp);
     IntType& pow(const FloatType& ftExp);
@@ -245,72 +245,72 @@ IntType& IntType::divide(int rhs)
 //                  Power methods implementations
 // =============================================================
 // Power methods for FloatType
-FloatType& FloatType::powIternal(const float exp) 
+FloatType& FloatType::powInternal(const float exp) 
 {
     *value = std::pow(*value, exp);
     return *this;
 }
 FloatType& FloatType::pow(const float exp) 
 {
-    return powIternal(exp);
+    return powInternal(exp);
 }
 FloatType& FloatType::pow(const IntType& itExp) 
 { 
-    return powIternal(itExp); 
+    return powInternal(itExp); 
 }
 FloatType& FloatType::pow(const FloatType& ftExp) 
 {
-    return powIternal(ftExp);    
+    return powInternal(ftExp);    
 }
 FloatType& FloatType::pow(const DoubleType& dtExp) 
 {
-    return powIternal(static_cast<float>(dtExp));
+    return powInternal(static_cast<float>(dtExp));
 }
 // ------------------------------------------------------------
 // Power methods for DoubleType
-DoubleType& DoubleType::powIternal(const double exp) 
+DoubleType& DoubleType::powInternal(const double exp) 
 {
     *value = std::pow(*value, exp);
     return *this;
 }
 DoubleType& DoubleType::pow(const double exp) 
 {
-    return powIternal(exp);
+    return powInternal(exp);
 }
 DoubleType& DoubleType::pow(const IntType& itExp) 
 { 
-    return powIternal(itExp); 
+    return powInternal(itExp); 
 }
 DoubleType& DoubleType::pow(const FloatType& ftExp) 
 {
-    return powIternal(static_cast<double>(ftExp));    
+    return powInternal(static_cast<double>(ftExp));    
 }
 DoubleType& DoubleType::pow(const DoubleType& dtExp) 
 {
-    return powIternal(dtExp);
+    return powInternal(dtExp);
 }
 // ------------------------------------------------------------
 // Power methods for IntType
-IntType& IntType::powIternal(const int exp) 
+IntType& IntType::powInternal(const int exp) 
 {
     *value = static_cast<int>(std::pow(*value, exp));
     return *this;
 }
 IntType& IntType::pow(const int exp) 
 {
-    return powIternal(exp);
+    return powInternal(exp);
 }
 IntType& IntType::pow(const IntType& itExp) 
 { 
-    return powIternal(itExp); 
+    return powInternal(itExp); 
 }
 IntType& IntType::pow(const FloatType& ftExp) 
 {
-    return powIternal(static_cast<int>(ftExp));    
+    return powInternal(static_cast<int>(ftExp));    
 }
 IntType& IntType::pow(const DoubleType& dtExp) 
 {
-    return powIternal(static_cast<int>(dtExp));
+    return powInternal(static_cast<int>(dtExp));
 }
 
 // =============================================================
@@ -320,18 +320,15 @@ IntType& IntType::pow(const DoubleType& dtExp)
 Point::Point(float cx, float cy) : x(cx), y(cy) {}
 Point& Point::multiply(const FloatType& ftm)
 {
-    multiply(static_cast<float>(ftm));
-    return *this;
+    return multiply(static_cast<float>(ftm));
 }
 Point& Point::multiply(const DoubleType& dtm)
 {
-    multiply(static_cast<float>(dtm));
-    return *this;
+    return multiply(static_cast<float>(dtm));
 }
 Point& Point::multiply(const IntType& itm)
 {
-    multiply(static_cast<float>(itm));
-    return *this;
+    return multiply(static_cast<float>(itm));
 }
 Point& Point::multiply(float m)
 {
