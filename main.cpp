@@ -102,13 +102,11 @@ public:
         delete value; 
         value = nullptr;
     }
-    // Explicit definition of copy constructor to silence warnings
-    // FloatType(const FloatType&) = default;
-    // 4 functions taking a float as input
-    FloatType& add(float rhs );
-    FloatType& subtract(float rhs );
-    FloatType& multiply(float rhs );
-    FloatType& divide(float rhs );
+    // Operator overloading
+    FloatType& operator+=(float rhs);
+    FloatType& operator-=(float rhs);
+    FloatType& operator*=(float rhs);
+    FloatType& operator/=(float rhs);
     // 4 power functions with different exponent type
     FloatType& powInternal(const float exp);
     FloatType& pow(const float exp); 
@@ -121,23 +119,23 @@ public:
         return *value;
     }
 }; 
-// 4 functions taking a float as input
-FloatType& FloatType::add(float rhs)
+// Operator overloading
+FloatType& FloatType::operator+=(float rhs) 
 {
     *value += rhs;
     return *this;
 }
-FloatType& FloatType::subtract(float rhs)
+FloatType& FloatType::operator-=(float rhs)
 {
     *value -= rhs;
     return *this;
 }
-FloatType& FloatType::multiply(float rhs)
+FloatType& FloatType::operator*=(float rhs)
 {
     *value *= rhs;
     return *this;
 }
-FloatType& FloatType::divide(float rhs)
+FloatType& FloatType::operator/=(float rhs)
 {
     *value /= rhs;
     return *this;
@@ -156,13 +154,11 @@ public:
         delete value; 
         value = nullptr;
     }
-    // Explicit definition of copy constructor to silence warnings
-    // DoubleType(const DoubleType&) = default; 
-    // 4 functions taking a double as input
-    DoubleType& add(double rhs );
-    DoubleType& subtract(double rhs );
-    DoubleType& multiply(double rhs );
-    DoubleType& divide(double rhs );
+    // Operator overloading
+    DoubleType& operator+=(double rhs);
+    DoubleType& operator-=(double rhs);
+    DoubleType& operator*=(double rhs);
+    DoubleType& operator/=(double rhs);
     // 4 power functions with different exponent type
     DoubleType& powInternal(const double exp);
     DoubleType& pow(const double exp); 
@@ -175,23 +171,23 @@ public:
         return *value;
     }
 }; 
-// 4 functions taking a double as input
-DoubleType& DoubleType::add(double rhs)
+// Operator overloading
+DoubleType& DoubleType::operator+=(double rhs) 
 {
     *value += rhs;
     return *this;
 }
-DoubleType& DoubleType::subtract(double rhs)
+DoubleType& DoubleType::operator-=(double rhs)
 {
     *value -= rhs;
     return *this;
 }
-DoubleType& DoubleType::multiply(double rhs)
+DoubleType& DoubleType::operator*=(double rhs)
 {
     *value *= rhs;
     return *this;
 }
-DoubleType& DoubleType::divide(double rhs)
+DoubleType& DoubleType::operator/=(double rhs)
 {
     *value /= rhs;
     return *this;
@@ -210,13 +206,11 @@ public:
         delete value; 
         value = nullptr;
     }
-    // Explicit definition of copy constructor to silence warnings
-    // IntType(const IntType&) = default;
-    // 4 functions taking an int as input
-    IntType& add( int rhs );
-    IntType& subtract( int rhs );
-    IntType& multiply( int rhs );
-    IntType& divide( int rhs );
+    // Operator overloading
+    IntType& operator+=(int rhs);
+    IntType& operator-=(int rhs);
+    IntType& operator*=(int rhs);
+    IntType& operator/=(int rhs);
     // 4 power functions with different exponent type
     IntType& powInternal(const int exp);
     IntType& pow(const int exp); 
@@ -229,23 +223,23 @@ public:
         return *value;
     }
 }; 
-// 4 functions taking an int as input
-IntType& IntType::add(int rhs)
+// Operator overloading
+IntType& IntType::operator+=(int rhs) 
 {
     *value += rhs;
     return *this;
 }
-IntType& IntType::subtract(int rhs)
+IntType& IntType::operator-=(int rhs)
 {
     *value -= rhs;
     return *this;
 }
-IntType& IntType::multiply(int rhs)
+IntType& IntType::operator*=(int rhs)
 {
     *value *= rhs;
     return *this;
 }
-IntType& IntType::divide(int rhs)
+IntType& IntType::operator/=(int rhs)
 {
     if( rhs != 0 )
         *value /= rhs;
@@ -371,27 +365,34 @@ int main()
     std::cout << "Initial value of ft0: " << ft0 << std::endl;
     // --------
     std::cout << "Use of function concatenation (only float arguments) " << std::endl;
-    std::cout << "New value of ft0 = (ft0 + 3.0f) * 1.5f / 5.0f = " <<  ft0.add( 3.0f ).multiply(1.5f).divide(5.0f)  << std::endl;
-       
+    ft0 += 3.0f;
+    ft0 *= 1.5f;
+    ft0 /= 5.0f;
+    std::cout << "New value of ft0 = (ft0 + 3.0f) * 1.5f / 5.0f = " <<  ft0  << std::endl;
+
+
     std::cout << "---------------------\n" << std::endl; 
     
     // DoubleType/IntType object instanciation and method tests
     DoubleType dt0 (5.0);
-    IntType it0(10);
+    IntType it0 (10);
 
     // --------
     std::cout << "Initial value of dt0: " << dt0 << std::endl;
     std::cout << "Initial value of it0: " << it0 << std::endl;
     // --------
     std::cout << "Use of function concatenation (mixed type arguments) " << std::endl;
-    std::cout << "New value of dt0 = (dt0 * it0) / 5.0f + ft0 = " <<  dt0.multiply(it0).divide(static_cast<double>(5.0f)).add(static_cast<double>(ft0))  << std::endl;
+    dt0 *= it0;
+    dt0 /= static_cast<double>(5.0f);
+    dt0 += static_cast<double>(ft0);
+    std::cout << "New value of dt0 = (dt0 * it0) / 5.0f + ft0 = " <<  dt0 << std::endl;
 
     std::cout << "---------------------\n" << std::endl; 
     
     // Intercept division by 0
     // --------
     std::cout << "Intercept division by 0 " << std::endl;
-    std::cout << "New value of it0 = dt0 / 0 = " << it0.divide(0)  << std::endl;
+    std::cout << "New value of it0 = it0 / 0 = " << it0  << std::endl;
 
     std::cout << "===============================\n" << std::endl; 
 
