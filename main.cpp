@@ -122,8 +122,8 @@ public:
 // Operator overloading
 FloatType& FloatType::operator+=(float rhs) 
 {
-  *value += rhs;
-  return *this;
+    *value += rhs;
+    return *this;
 }
 FloatType& FloatType::operator-=(float rhs)
 {
@@ -174,8 +174,8 @@ public:
 // Operator overloading
 DoubleType& DoubleType::operator+=(double rhs) 
 {
-  *value += rhs;
-  return *this;
+    *value += rhs;
+    return *this;
 }
 DoubleType& DoubleType::operator-=(double rhs)
 {
@@ -226,8 +226,8 @@ public:
 // Operator overloading
 IntType& IntType::operator+=(int rhs) 
 {
-  *value += rhs;
-  return *this;
+    *value += rhs;
+    return *this;
 }
 IntType& IntType::operator-=(int rhs)
 {
