@@ -547,7 +547,7 @@ int main()
     std::cout << "ft3 after: " << ft3 << std::endl;
     std::cout << "---------------------\n" << std::endl;
 
-    std::cout << "Calling DoubleType::apply() using a lambda (adds 6.0) and IntType as return type:" << std::endl;
+    std::cout << "Calling DoubleType::apply() using a lambda (adds 6.0) and DoubleType as return type:" << std::endl;
     std::cout << "dt3 before: " << dt3 << std::endl;
     dt3.apply( [&dt3](double &value) -> DoubleType&
     {
