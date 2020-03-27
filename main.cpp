@@ -105,36 +105,72 @@ void myIntFreeFunct(int& iValue)
     iValue += 5;
 }
 
-// // =============================================================
-// //                  Numeric object definition
-// // =============================================================
-// template <typename Numeric> 
-// struct Numeric
-// {
-// private:
-//     std::unique_ptr<float> value; // #1)
-// public:    
-//     Numeric(float value_) : value( new float(value_) ) {}
-//     // Operator overloading
-//     Numeric& operator+=(float rhs);
-//     Numeric& operator-=(float rhs);
-//     Numeric& operator*=(float rhs);
-//     Numeric& operator/=(float rhs);
-//     // 4 power functions with different exponent type
-//     Numeric& powInternal(const float exp);
-//     Numeric& pow(const float exp); 
-//     Numeric& pow(const IntType& itExp);
-//     Numeric& pow(const FloatType& ftExp);
-//     Numeric& pow(const DoubleType& dtExp);    
-//     // convert UDT to primitive type
-//     operator float() const
-//     {
-//         return *value;
-//     }
-//     // 
-//     Numeric& apply(std::function<FloatType&(float&)> myFunc);
-//     Numeric& apply(void(*myFunc)(float&));
-// }; 
+// =============================================================
+//                  Numeric object definition
+// =============================================================
+template <typename TemplatedType> 
+struct Numeric
+{
+public:    
+
+    using CurrentType = TemplatedType;
+
+    Numeric(CurrentType value_) : value( new CurrentType(value_) ) {}
+    // Operator overloading
+    Numeric& operator+=(CurrentType rhs)
+    {
+        *value += rhs;
+        return *this;
+    }
+    Numeric& operator-=(CurrentType rhs)
+    {
+        *value -= rhs;
+        return *this;
+    }
+    Numeric& operator*=(CurrentType rhs)
+    {
+        *value -= rhs;
+        return *this;
+    }
+    Numeric& operator/=(CurrentType rhs)
+    {
+        if (std::is_same<CurrentType, int>::value) 
+        {
+            // Only way to silence all the warnings for comaparison (-Wfloat-equal)
+            if( std::abs(rhs) <= std::numeric_limits<CurrentType>::epsilon() )
+                *value /= rhs;
+            else    
+                std::cout << "Division by zero not allowed with integers!!" << std::endl;
+            return *this;       
+        }
+        *value /= rhs;
+        return *this; 
+    }    
+    // 4 power functions with different exponent type
+    Numeric& powInternal(const float exp);
+    Numeric& pow(const float exp); 
+    Numeric& pow(const IntType& itExp);
+    Numeric& pow(const FloatType& ftExp);
+    Numeric& pow(const DoubleType& dtExp);    
+    // convert UDT to primitive type
+    operator CurrentType() const { return *value; }
+    // 
+    Numeric& apply(std::function<Numeric&(CurrentType&)> myFunc)
+    {
+        if( myFunc )    
+            return myFunc(*value);
+        return *this;
+    }    
+    Numeric& apply(void(*myFunc)(CurrentType&))
+    {
+        if( myFunc )
+            myFunc(*value);
+        return *this;
+    }
+private:
+    std::unique_ptr<CurrentType> value; // #1)    
+}; 
+
 
 // =============================================================
 //                  FloatType object definition
@@ -440,7 +476,7 @@ int main()
     //                      Arithmetic tests
     // ------------------------------------------------------------
     // FloatType object instanciation and method tests
-    FloatType ft0 (3.0f);
+    Numeric<float> ft0 (3.0f);
     // --------
     std::cout << "Initial value of ft0: " << ft0 << std::endl;
     // --------
@@ -454,8 +490,8 @@ int main()
     std::cout << "---------------------\n" << std::endl; 
     
     // DoubleType/IntType object instanciation and method tests
-    DoubleType dt0 (5.0);
-    IntType it0 (10);
+    Numeric<double> dt0 (5.0);
+    Numeric<int> it0 (10);
 
     // --------
     std::cout << "Initial value of dt0: " << dt0 << std::endl;
@@ -488,6 +524,15 @@ int main()
     IntType itExp(2);
     FloatType ftExp(2.0f);
     DoubleType dtExp(2.0);
+    // Numeric<float> ft1(2);
+    // Numeric<double> dt1(2);
+    // Numeric<int> it1(2);    
+    // int floatExp = 2.0f;
+    // int doubleExp = 2.0;
+    // int intExp = 2;
+    // Numeric<int> itExp(2);
+    // Numeric<float> ftExp(2.0f);
+    // Numeric<double> dtExp(2.0);
     
     // Power tests with FloatType
     std::cout << "Power tests with FloatType " << std::endl;
