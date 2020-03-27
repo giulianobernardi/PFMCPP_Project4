@@ -1,5 +1,6 @@
 
 #include <iostream>
+#include <memory>
 /*
 Project 4: Part 7 / 9
 Video: Chapter 5 Part 4
@@ -104,20 +105,46 @@ void myIntFreeFunct(int& iValue)
     iValue += 5;
 }
 
+// // =============================================================
+// //                  Numeric object definition
+// // =============================================================
+// template <typename Numeric> 
+// struct Numeric
+// {
+// private:
+//     std::unique_ptr<float> value; // #1)
+// public:    
+//     Numeric(float value_) : value( new float(value_) ) {}
+//     // Operator overloading
+//     Numeric& operator+=(float rhs);
+//     Numeric& operator-=(float rhs);
+//     Numeric& operator*=(float rhs);
+//     Numeric& operator/=(float rhs);
+//     // 4 power functions with different exponent type
+//     Numeric& powInternal(const float exp);
+//     Numeric& pow(const float exp); 
+//     Numeric& pow(const IntType& itExp);
+//     Numeric& pow(const FloatType& ftExp);
+//     Numeric& pow(const DoubleType& dtExp);    
+//     // convert UDT to primitive type
+//     operator float() const
+//     {
+//         return *value;
+//     }
+//     // 
+//     Numeric& apply(std::function<FloatType&(float&)> myFunc);
+//     Numeric& apply(void(*myFunc)(float&));
+// }; 
+
 // =============================================================
 //                  FloatType object definition
 // =============================================================
 struct FloatType
 {
 private:
-    float* value;
+    std::unique_ptr<float> value; // #1)
 public:    
-    FloatType(float value_) : value( new float(value_) ) {}
-    ~FloatType()
-    { 
-        delete value; 
-        value = nullptr;
-    }
+    FloatType(float value_) : value(std::make_unique<float>(value_)) {} // #1)
     // Operator overloading
     FloatType& operator+=(float rhs);
     FloatType& operator-=(float rhs);
@@ -178,14 +205,9 @@ FloatType& FloatType::apply(void(*myFunc)(float&))
 struct DoubleType
 {
 private:
-    double* value;
+    std::unique_ptr<double> value; // #1)
 public:   
-    DoubleType(double value_) : value( new double(value_) ) {}
-    ~DoubleType()
-    { 
-        delete value; 
-        value = nullptr;
-    }
+    DoubleType(double value_) : value(std::make_unique<double>(value_)) {} // #1)
     // Operator overloading
     DoubleType& operator+=(double rhs);
     DoubleType& operator-=(double rhs);
@@ -246,14 +268,9 @@ DoubleType& DoubleType::apply(void(*myFunc)(double&))
 struct IntType
 {
 private:
-    int* value;
+    std::unique_ptr<int> value; // #1)
 public:       
-    IntType(int value_) : value( new int(value_) ) {}
-    ~IntType()
-    { 
-        delete value; 
-        value = nullptr;
-    }
+    IntType(int value_) : value(std::make_unique<int>(value_)) {} // #1)
     // Operator overloading
     IntType& operator+=(int rhs);
     IntType& operator-=(int rhs);
