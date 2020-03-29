@@ -116,26 +116,25 @@ public:
         *value *= rhs;
         return *this;
     }
-    Numeric& operator/=(CurrentType rhs)
+       
+    Numeric& operator /= (const CurrentType& rhs)
     {
-        if (std::is_same<CurrentType, int>::value) 
+        if constexpr ( std::is_same<int, CurrentType>::value ) 
         {
-            // We enter this if with an int rhs. If it's larger or equal than one, we divide, otherwise it's 0 and we return the cout. If I used '!= 0', I'd get the error (-Wfloat-equal)
-            if( std::abs(rhs) >= 1)
-                {
-                    *value /= rhs;
-                }
-            else    
+            if( rhs == 0 )
+            {
                 std::cout << "Division by zero not allowed with integers!!" << std::endl;
-            return *this;       
+                return *this;
+            }
         }
-        if( std::abs(rhs) <= std::numeric_limits<CurrentType>::epsilon() )
+        else if( std::abs(rhs) <= std::numeric_limits<CurrentType>::epsilon() )
         {
             std::cout << "Warning: Floating point division by zero!" << std::endl;
         }
+
         *value /= rhs;
-        return *this; 
-    }    
+        return *this;
+    }
     // 4 power functions with different exponent type
     Numeric& powInternal(const CurrentType exp)
     {
