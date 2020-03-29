@@ -113,19 +113,25 @@ public:
     }
     Numeric& operator*=(CurrentType rhs)
     {
-        *value -= rhs;
+        *value *= rhs;
         return *this;
     }
     Numeric& operator/=(CurrentType rhs)
     {
         if (std::is_same<CurrentType, int>::value) 
         {
-            // Only way to silence all the warnings for comaparison (-Wfloat-equal)
-            if( std::abs(rhs) <= std::numeric_limits<CurrentType>::epsilon() )
-                *value /= rhs;
+            // We enter this if with an int rhs. If it's larger or equal than one, we divide, otherwise it's 0 and we return the cout. If I used '!= 0', I'd get the error (-Wfloat-equal)
+            if( std::abs(rhs) >= 1)
+                {
+                    *value /= rhs;
+                }
             else    
                 std::cout << "Division by zero not allowed with integers!!" << std::endl;
             return *this;       
+        }
+        if( std::abs(rhs) <= std::numeric_limits<CurrentType>::epsilon() )
+        {
+            std::cout << "Warning: Floating point division by zero!" << std::endl;
         }
         *value /= rhs;
         return *this; 
@@ -197,19 +203,14 @@ public:
     }
     Numeric& operator*=(CurrentType rhs)
     {
-        *value -= rhs;
+        *value *= rhs;
         return *this;
     }
     Numeric& operator/=(CurrentType rhs)
     {
-        if (std::is_same<CurrentType, int>::value) 
+        if( std::abs(rhs) <= std::numeric_limits<CurrentType>::epsilon() )
         {
-            // Only way to silence all the warnings for comaparison (-Wfloat-equal)
-            if( std::abs(rhs) <= std::numeric_limits<CurrentType>::epsilon() )
-                *value /= rhs;
-            else    
-                std::cout << "Division by zero not allowed with integers!!" << std::endl;
-            return *this;       
+            std::cout << "Warning: Floating point division by zero!" << std::endl;
         }
         *value /= rhs;
         return *this; 
@@ -302,6 +303,7 @@ int main()
     // Intercept division by 0
     // --------
     std::cout << "Intercept division by 0 " << std::endl;
+    it0 /= 0;
     std::cout << "New value of it0 = it0 / 0 = " << it0  << std::endl;
 
     std::cout << "===============================\n" << std::endl; 
@@ -374,7 +376,7 @@ int main()
     Point p2(ft2, static_cast<float>(dt2));
     p2.toString();   
     std::cout << "Multiplication factor: " << dt2 << std::endl;
-    p2.multiply(dt2); 
+    p2.multiply(static_cast<float>(dt2)); 
     p2.toString();   
     std::cout << "---------------------\n" << std::endl;
 
@@ -419,13 +421,13 @@ int main()
       return dt3;
     } ); // This calls the templated apply fcn
     std::cout << "dt3 after: " << dt3 << std::endl;
-    std::cout << "Calling DoubleType::apply() twice using a free function (adds 6.0) and void as return type:" << std::endl;
+    std::cout << "Calling DoubleType::apply() twice using a free function (adds 7.0) and void as return type:" << std::endl;
     std::cout << "dt3 before: " << dt3 << std::endl;
     dt3.apply(myNumericFreeFunct<double>).apply(myNumericFreeFunct<double>); // This calls the templated apply fcn
     std::cout << "dt3 after: " << dt3 << std::endl;
     std::cout << "---------------------\n" << std::endl;
 
-    std::cout << "Calling IntType::apply() using a lambda (adds 7) and IntType as return type:" << std::endl;
+    std::cout << "Calling IntType::apply() using a lambda (adds 5) and IntType as return type:" << std::endl;
     std::cout << "it3 before: " << it3 << std::endl;
     it3.apply( [&it3](std::unique_ptr<ItNumeric::CurrentType> &value) -> ItNumeric&
     {
