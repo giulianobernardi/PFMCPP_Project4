@@ -241,18 +241,24 @@ public:
         return *this;
     }
 
-    // // Apply function
-    // Numeric& apply(std::function<Numeric&(std::unique_ptr<CurrentType>&)> myFunc)
-    // {
-    //     std::cout << "--->Numeric as a return type" << std::endl;
-    //     if( myFunc )    
-    //         return myFunc(value);
-    //     return *this;
-    // }  
+    // Apply function
+    template<typename CallableFcn>
+    Numeric& apply(CallableFcn myFunc)
+    {
+        myFunc(value);
+        return *this;
+    }  
 
 private:
     std::unique_ptr<CurrentType> value;
 }; 
+
+// Cube function
+template <typename TemplatedType>
+void cube(std::unique_ptr<TemplatedType>& value)
+{
+    *value =  (*value) * (*value) * (*value);
+}
 
 // =============================================================
 //                          Point class
@@ -322,48 +328,48 @@ int main()
     Numeric<float> floatNum(4.3f);
     Numeric<int> intNum(2);
     Numeric<int> intNum2(6);
-    intNum = 2 + (intNum2 - 4) + floatNum / 2.3;
+    intNum = 2 + (intNum2 - 4) + static_cast<double>(floatNum) / 2.3;
     std::cout << "intNum: " << intNum << std::endl;
     
-    // {
-    //     using Type = decltype(f)::Type;
-    //     f.apply([&f](std::unique_ptr<Type>&value) -> decltype(f)&
-    //             {
-    //                 auto& v = *value;
-    //                 v = v * v;
-    //                 return f;
-    //             });
-    //     std::cout << "f squared: " << f << std::endl;
+    {
+        using Type = decltype(f)::CurrentType;
+        f.apply([&f](std::unique_ptr<Type>&value) -> decltype(f)&
+                {
+                    auto& v = *value;
+                    v = v * v;
+                    return f;
+                });
+        std::cout << "f squared: " << f << std::endl;
         
-    //     f.apply( cube<Type> );
-    //     std::cout << "f cubed: " << f << std::endl;
-    // }
+        f.apply( cube<Type> );
+        std::cout << "f cubed: " << f << std::endl;
+    }
     
-    // {
-    //     using Type = decltype(d)::Type;
-    //     d.apply([&d](std::unique_ptr<Type>&value) -> decltype(d)&
-    //             {
-    //                 auto& v = *value;
-    //                 v = v * v;
-    //                 return d;
-    //             });
-    //     std::cout << "d squared: " << d << std::endl;
+    {
+        using Type = decltype(d)::CurrentType;
+        d.apply([&d](std::unique_ptr<Type>&value) -> decltype(d)&
+                {
+                    auto& v = *value;
+                    v = v * v;
+                    return d;
+                });
+        std::cout << "d squared: " << d << std::endl;
         
-    //     d.apply( cube<Type> );
-    //     std::cout << "d cubed: " << d << std::endl;
-    // }
+        d.apply( cube<Type> );
+        std::cout << "d cubed: " << d << std::endl;
+    }
     
-    // {
-    //     using Type = decltype(i)::Type;
-    //     i.apply([&i](std::unique_ptr<Type>&value) -> decltype(i)&
-    //             {
-    //                 auto& v = *value;
-    //                 v = v * v;
-    //                 return i;
-    //             });
-    //     std::cout << "i squared: " << i << std::endl;
+    {
+        using Type = decltype(i)::CurrentType;
+        i.apply([&i](std::unique_ptr<Type>&value) -> decltype(i)&
+                {
+                    auto& v = *value;
+                    v = v * v;
+                    return i;
+                });
+        std::cout << "i squared: " << i << std::endl;
         
-    //     i.apply( cube<Type> );
-    //     std::cout << "i cubed: " << i << std::endl;
-    // }
+        i.apply( cube<Type> );
+        std::cout << "i cubed: " << i << std::endl;
+    }
 }
