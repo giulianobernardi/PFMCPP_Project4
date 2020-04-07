@@ -256,6 +256,34 @@ private:
     std::unique_ptr<CurrentType> value;
 }; 
 
+// =============================================================
+//                          Point class
+// =============================================================
+
+struct Point
+{
+    Point(float, float);
+
+    template <typename OtherTemplatedType>  
+    Point& multiply(const OtherTemplatedType& ott)
+    {
+        x *= static_cast<float>(ott);
+        y *= static_cast<float>(ott);
+        return *this;
+    }
+
+    void toString();
+private:
+    float x{0}, y{0};
+};
+
+Point::Point(float cx, float cy) : x(cx), y(cy) {}
+
+void Point::toString()
+{
+    std::cout << "x: " << x << ", " << "y: " << y << std::endl;
+}
+
 
 // =============================================================
 //                              MAIN
@@ -282,8 +310,8 @@ int main()
     i += 2.f; i -= f; i *= d; i /= 2.f;
     std::cout << "i: "<< i << std::endl;
     
-    // Point p(f, i);
-    // p.toString();
+    Point p(f, i);
+    p.toString();
     
     // d *= -1;
     // std::cout << "d: " << d << std::endl;
