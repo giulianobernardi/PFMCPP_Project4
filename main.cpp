@@ -233,24 +233,22 @@ public:
     }
 
 
-    // // Power functions
-    // Numeric& powInternal(const CurrentType exp)
+    // Power function
+    template <typename OtherTemplatedType>   
+    Numeric& pow(const OtherTemplatedType& exp)
+    {
+        *value = std::pow(*value, static_cast<TemplatedType>(exp));
+        return *this;
+    }
+
+    // // Apply function
+    // Numeric& apply(std::function<Numeric&(std::unique_ptr<CurrentType>&)> myFunc)
     // {
-    //     *value = static_cast<CurrentType>(std::pow(*value, exp));
+    //     std::cout << "--->Numeric as a return type" << std::endl;
+    //     if( myFunc )    
+    //         return myFunc(value);
     //     return *this;
-    // }
-    // Numeric& pow(const CurrentType exp)
-    // {
-    //     return powInternal(exp);
-    // }
-    // // This is necessary for when I call pow from an object of a given Numeric type with an argument of a different Numeric type; otherwise it would give me some conversion warnings
-    // template<typename DifferentTemplatedType> 
-    // Numeric& pow(const DifferentTemplatedType& nExp)
-    // {
-    //     return powInternal(static_cast<CurrentType>(nExp));
-    // }
-    // // convert UDT to primitive type
-    // operator CurrentType() const { return *value; }
+    // }  
 
 private:
     std::unique_ptr<CurrentType> value;
@@ -281,7 +279,7 @@ Point::Point(float cx, float cy) : x(cx), y(cy) {}
 
 void Point::toString()
 {
-    std::cout << "x: " << x << ", " << "y: " << y << std::endl;
+    std::cout << "Point { x: " << x << ", " << "y: " << y << " }"<< std::endl;
 }
 
 
@@ -313,19 +311,19 @@ int main()
     Point p(f, i);
     p.toString();
     
-    // d *= -1;
-    // std::cout << "d: " << d << std::endl;
+    d *= -1;
+    std::cout << "d: " << d << std::endl;
     
-    // p.multiply(d.pow(f).pow(i));
-    // std::cout << "d: " << d << std::endl;
+    p.multiply(d.pow(f).pow(i));
+    std::cout << "d: " << d << std::endl;
     
-    // p.toString();
+    p.toString();
     
-    // Numeric<float> floatNum(4.3f);
-    // Numeric<int> intNum(2);
-    // Numeric<int> intNum2(6);
-    // intNum = 2 + (intNum2 - 4) + floatNum / 2.3;
-    // std::cout << "intNum: " << intNum << std::endl;
+    Numeric<float> floatNum(4.3f);
+    Numeric<int> intNum(2);
+    Numeric<int> intNum2(6);
+    intNum = 2 + (intNum2 - 4) + floatNum / 2.3;
+    std::cout << "intNum: " << intNum << std::endl;
     
     // {
     //     using Type = decltype(f)::Type;
