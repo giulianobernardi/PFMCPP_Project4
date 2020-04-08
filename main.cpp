@@ -159,10 +159,6 @@ struct Numeric
 {
 public:    
     using CurrentType = Temporary<TemplatedType>;
-    
-    // Constructor when no argument is passed
-    Numeric() 
-    : value( std::make_unique<CurrentType>(0) ) {}
 
     // Constructor when passing an object
     Numeric(CurrentType value_) 
@@ -203,16 +199,23 @@ public:
     template <typename OtherTemplatedType>   
     Numeric& operator /= (const OtherTemplatedType& ott)
     {
-        if constexpr ( std::is_same<int, OtherTemplatedType>::value ) 
-        {
-            if( ott == 0 )
-            {
-                std::cout << "Division by zero not allowed with integers!!" << std::endl;
-                return *this;
+        if constexpr ( std::is_same<int, TemplatedType>::value ) 
+        { // If template type is an int
+            if constexpr ( std::is_same<int, OtherTemplatedType>::value ) 
+            { // If param type is an int
+                if( ott == 0 )
+                { // If param is 0
+                    std::cout << "Division by zero not allowed with integers!!" << std::endl;
+                    return *this;
+                }
+            }
+            else if( std::abs(ott) <= std::numeric_limits<OtherTemplatedType>::epsilon() )
+            {  // If param type is not an int, but param is <= than eps
+                std::cout << "Division by (non-integer almost) zero not allowed when the first operand is integer!!!" << std::endl;
             }
         }
         else if( std::abs(ott) <= std::numeric_limits<OtherTemplatedType>::epsilon() )
-        {
+        {  // If neither template nor param type are int, and param is <= than eps
             std::cout << "Warning: Floating point division by zero!" << std::endl;
         }
 
@@ -332,13 +335,15 @@ int main()
     std::cout << "intNum: " << intNum << std::endl;
     
     {
+        // using Type = decltype(f);
+        // f.apply([&f](std::unique_ptr<Type::CurrentType>& value) -> Type&
         using Type = decltype(f)::CurrentType;
         f.apply([&f](std::unique_ptr<Type>&value) -> decltype(f)&
-                {
-                    auto& v = *value;
-                    v = v * v;
-                    return f;
-                });
+            {
+                auto& v = *value;
+                v = v * v;
+                return f;
+            });
         std::cout << "f squared: " << f << std::endl;
         
         f.apply( cube<Type> );
@@ -348,11 +353,11 @@ int main()
     {
         using Type = decltype(d)::CurrentType;
         d.apply([&d](std::unique_ptr<Type>&value) -> decltype(d)&
-                {
-                    auto& v = *value;
-                    v = v * v;
-                    return d;
-                });
+            {
+                auto& v = *value;
+                v = v * v;
+                return d;
+            });
         std::cout << "d squared: " << d << std::endl;
         
         d.apply( cube<Type> );
@@ -362,11 +367,11 @@ int main()
     {
         using Type = decltype(i)::CurrentType;
         i.apply([&i](std::unique_ptr<Type>&value) -> decltype(i)&
-                {
-                    auto& v = *value;
-                    v = v * v;
-                    return i;
-                });
+            {
+                auto& v = *value;
+                v = v * v;
+                return i;
+            });
         std::cout << "i squared: " << i << std::endl;
         
         i.apply( cube<Type> );
