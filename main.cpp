@@ -13,13 +13,13 @@ Create a branch named Part9
  2) add these macros after the JUCE_LEAK_DETECTOR macro :
  */
 
-#define JUCE_DECLARE_NON_COPYABLE(className) \
-            className (const className&) = delete;\
-            className& operator= (const className&) = delete;
+// #define JUCE_DECLARE_NON_COPYABLE(className) \
+//             className (const className&) = delete;\
+//             className& operator= (const className&) = delete;
 
-#define JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(className) \
-            JUCE_DECLARE_NON_COPYABLE(className) \
-            JUCE_LEAK_DETECTOR(className)
+// #define JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(className) \
+//             JUCE_DECLARE_NON_COPYABLE(className) \
+//             JUCE_LEAK_DETECTOR(className)
 
 /*
  3) add JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(Temporary) to the end of the  Temporary<> struct
@@ -78,21 +78,40 @@ send me a DM to check your pull request
 */
 
 #include <iostream>
-#include <cmath>
-#include <memory>
+#include <math.h>
 #include <functional>
+#include <memory>
 #include <typeinfo>
+#include "LeakedObjectDetector.h"
 
 
 template<typename NumericType>
 struct Temporary
 {
+    // Constructor when passing a NumericType object
     Temporary(NumericType t) : v(t)
     {
         std::cout << "I'm a Temporary<" << typeid(v).name() << "> object, #"
                   << counter++ << std::endl;
     }
-    
+
+    // ----- The magnificient 3 (+2 implicit) --------
+    // Destructor
+    ~Temporary() = default;
+    // Move constructor
+    Temporary(Temporary&& other) : v( std::move(other.v) ) { }
+    // Move assignment operator
+    Temporary& operator=(Temporary&& other)
+    {
+        this->v =  std::move(other.v);
+        return *this;
+    }    
+    // -------------------------------------------------
+
+    /*
+     revise these conversion functions to read/write to 'v' here
+     hint: what qualifier do read-only functions usually have?
+     */
     operator NumericType() const
     { 
         /* read-only function */
@@ -106,7 +125,11 @@ struct Temporary
 private:
     static int counter;
     NumericType v;
+
+    // Leak detector for Temporary
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(Temporary)
 };
+
 
 template<typename NumericType>
 int Temporary<NumericType>::counter = 0;
@@ -119,10 +142,23 @@ struct Numeric
 {
 public:    
     using CurrentType = Temporary<TemplatedType>;
-
-    // Constructor when passing an object
-    Numeric(CurrentType value_) 
+    
+    // Constructor when passing a TemplatedType object
+    Numeric(TemplatedType value_) 
     : value( std::make_unique<CurrentType>(value_) ) {}
+
+    // ----- The magnificient 3 (+2 implicit) --------
+    // Destructor
+    ~Numeric() = default;
+    // Move constructor
+    Numeric(Numeric&& other_) : value( std::move(other_.value) ) { }
+    // Move assignment operator
+    Numeric& operator=(Numeric&& other_)
+    {
+        this->value =  std::move(other_.value);
+        return *this;
+    }    
+    // -------------------------------------------------
     
     // -------------------------------
     // Operators overloading
@@ -214,6 +250,9 @@ public:
 
 private:
     std::unique_ptr<CurrentType> value;
+
+    // Leak detector for Numeric
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(Numeric)
 }; 
 
 // Cube function
@@ -297,11 +336,11 @@ int main()
     {
         using Type = decltype(f);
         f.apply([&f](std::unique_ptr<Type::CurrentType>&value) -> Type&
-            {
-                auto& v = *value;
-                v = v * v;
-                return f;
-            });
+                {
+                    auto& v = *value;
+                    v = v * v;
+                    return f;
+                });
         std::cout << "f squared: " << f << std::endl;
         
         f.apply( cube<Type::CurrentType> );
@@ -311,11 +350,11 @@ int main()
     {
         using Type = decltype(d);
         d.apply([&d](std::unique_ptr<Type::CurrentType>&value) -> Type&
-            {
-                auto& v = *value;
-                v = v * v;
-                return d;
-            });
+                {
+                    auto& v = *value;
+                    v = v * v;
+                    return d;
+                });
         std::cout << "d squared: " << d << std::endl;
         
         d.apply( cube<Type::CurrentType> );
@@ -325,11 +364,11 @@ int main()
     {
         using Type = decltype(i);
         i.apply([&i](std::unique_ptr<Type::CurrentType>&value) -> Type&
-            {
-                auto& v = *value;
-                v = v * v;
-                return i;
-            });
+                {
+                    auto& v = *value;
+                    v = v * v;
+                    return i;
+                });
         std::cout << "i squared: " << i << std::endl;
         
         i.apply( cube<Type::CurrentType> );
