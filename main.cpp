@@ -95,13 +95,9 @@ struct Temporary
                   << counter++ << std::endl;
     }
 
-    // -------------- The magnificient 5 --------------
+    // ----- The magnificient 3 (+2 implicit) --------
     // Destructor
     ~Temporary() = default;
-    // Copy constructor (deleted as object non copyable)
-    Temporary(Temporary& other) = delete;
-    // Copy assignment operator (deleted as object non copyable)
-    Temporary& operator=(Temporary& other) = delete;    
     // Move constructor
     Temporary(Temporary&& other) : v( std::move(other.v) ) { }
     // Move assignment operator
@@ -151,13 +147,9 @@ public:
     Numeric(TemplatedType value_) 
     : value( std::make_unique<CurrentType>(value_) ) {}
 
-    // -------------- The magnificient 5 --------------
+    // ----- The magnificient 3 (+2 implicit) --------
     // Destructor
     ~Numeric() = default;
-    // Copy constructor (deleted as object non copyable)
-    Numeric(Numeric& other) = delete;
-    // Copy assignment operator (deleted as object non copyable)
-    Numeric& operator=(Numeric& other) = delete;    
     // Move constructor
     Numeric(Numeric&& other_) : value( std::move(other_.value) ) { }
     // Move assignment operator
